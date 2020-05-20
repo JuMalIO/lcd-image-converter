@@ -27,48 +27,40 @@ $(start_block_header)
 *******************************************************************************/
 
 /*
- typedef struct {
-     const uint$(img_data_block_size)_t *data;
-     uint16_t width;
-     uint16_t height;
-     uint8_t dataSize;
-     } tImage;
- typedef struct {
-     long int code;
-     const tImage *image;
-     } tChar;
- typedef struct {
-     int length;
-     const tChar *chars;
-     } tFont;
-*/
-
 #include <stdint.h>
-$(end_block_header)
 
-$(start_block_images_table)
-#if (0x0$(out_char_code_sim) == 0x0)
-static const uint$(img_data_block_size)_t image_data_$(doc_name_ws)_0x$(out_char_code)[$(out_blocks_count)] = {
-    $(out_image_preview)
-    $(out_image_data)
-};
-static const tImage $(doc_name_ws)_0x$(out_char_code) = { image_data_$(doc_name_ws)_0x$(out_char_code),
-    $(out_image_width), $(out_image_height), $(img_data_block_size)};
-#endif
-$(end_block_images_table)
+typedef struct
+{
+  const uint8_t Width;   // width, in bits (or pixels), of the character
+  const uint16_t Offset; // offset of the character's bitmap, in bytes, into the the FONT_Info's data array
+} FONT_CharInfo;	
 
-static const tChar $(doc_name_ws)_array[] = {
-$(start_block_images_table)
-#if (0x0$(out_char_code_sim) == 0x0)
-  // character: '$(out_char_text)'
-  {0x$(out_char_code), &$(doc_name_ws)_0x$(out_char_code)}$(out_comma)
-#else
-  // character: '$(out_char_text)' == '$(out_char_text_sim)'
-  {0x$(out_char_code), &$(doc_name_ws)_0x$(out_char_code_sim)}$(out_comma)
-#endif
-$(end_block_images_table)
+typedef struct
+{
+  const uint8_t         Height;	    // height, in pages (8 pixels), of the font's characters
+  const uint8_t         StartChar;  // the first character in the font (e.g. in charInfo and data)
+  const uint8_t         EndChar;    // the last character in the font
+  const FONT_CHAR_INFO*	CharInfo;   // pointer to array of char information
+  const uint$(img_data_block_size)_t*        Data;	    // pointer to generated array of character visual representation		
+} FONT_Info;
+*/$(end_block_header)
+
+static const uint$(img_data_block_size)_t image_data_$(doc_name_ws)[] =
+{$(start_block_images_table)
+  $(out_image_preview)
+  $(out_image_data)$(end_block_images_table)
 };
 
-$(start_block_font_def)
-const tFont $(doc_name_ws) = { $(out_images_count), $(doc_name_ws)_array };
-$(end_block_font_def)
+static const FONT_CharInfo char_info_$(doc_name_ws)[] =
+{$(start_block_images_table)
+  {$(out_image_width), $(out_image_offset)}$(out_comma) // character: '$(out_char_text)' $(end_block_images_table)
+};
+
+$(start_block_font_def)const FONT_Info $(doc_name_ws) =
+{
+  $(out_images_max_height),
+  '$(fnt_string_starts)',
+  '$(fnt_string_ends)',
+  char_info_$(doc_name_ws),
+  image_data_$(doc_name_ws)
+};$(end_block_font_def)

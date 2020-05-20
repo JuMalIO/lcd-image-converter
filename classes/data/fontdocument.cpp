@@ -42,6 +42,7 @@
 #include "parsedimagedata.h"
 #include "fontoptions.h"
 #include "bitmaphelper.h"
+#include "tagslist.h"
 
 namespace Data
 {
@@ -449,6 +450,8 @@ QString FontDocument::convert(Settings::Presets::Preset *preset)
   tags.setTagValue(Parsing::TagsList::Tag::FontSize, QString("%1").arg(parameters.size));
   tags.setTagValue(Parsing::TagsList::Tag::FontStyle, parameters.style);
   tags.setTagValue(Parsing::TagsList::Tag::FontString, Parsing::Conversion::FontHelper::escapeControlChars(chars));
+  tags.setTagValue(Parsing::TagsList::Tag::FontStringStarts, QString("%1").arg(chars[0]));
+  tags.setTagValue(Parsing::TagsList::Tag::FontStringEnds, QString("%1").arg(chars[chars.length() - 1]));
   tags.setTagValue(Parsing::TagsList::Tag::FontAntiAliasing, parameters.antiAliasing ? "yes" : "no");
   tags.setTagValue(Parsing::TagsList::Tag::FontWidthType, parameters.monospaced ? "monospaced" : "proportional");
   tags.setTagValue(Parsing::TagsList::Tag::FontAscent, QString("%1").arg(parameters.ascent));
@@ -792,6 +795,7 @@ void FontDocument::prepareImages(Settings::Presets::Preset *preset, const QStrin
 
   // collect ParsedImageData
   {
+    int offset = 0;
     QListIterator<QString> it(orderedKeys);
     it.toFront();
 
@@ -800,6 +804,11 @@ void FontDocument::prepareImages(Settings::Presets::Preset *preset, const QStrin
       QImage image = QImage(*data->image(key));
 
       Parsing::ParsedImageData *data = new Parsing::ParsedImageData(preset, &image, tags);
+
+      data->tags()->setTagValue(Parsing::TagsList::Tag::OutputImageOffset, QString::number(offset));
+
+      offset += data->tags()->tagValue(Parsing::TagsList::Tag::OutputBlocksCount).toInt();
+
       images->insert(key, data);
     }
   }

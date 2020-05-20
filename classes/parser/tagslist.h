@@ -67,6 +67,8 @@ public:
     FontAntiAliasing,
     FontAscent,
     FontDescent,
+    FontStringStarts,
+    FontStringEnds,
 
     TemplateFilename,
 
@@ -90,6 +92,7 @@ public:
     OutputImagesMaxWidth,
     OutputImagesMaxHeight,
     OutputImagesMaxBlocksCount,
+    OutputImageOffset,
 
     ApplicationDate,
     ApplicationRevision,

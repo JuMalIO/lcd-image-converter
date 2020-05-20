@@ -172,6 +172,8 @@ void TagsList::initTagsMap()
   this->mTagNameMap->insert("fontAntialiasing", Tag::FontAntiAliasing);
   this->mTagNameMap->insert("fnt_ascent",       Tag::FontAscent);
   this->mTagNameMap->insert("fnt_descent",      Tag::FontDescent);
+  this->mTagNameMap->insert("fnt_string_starts",Tag::FontStringStarts);
+  this->mTagNameMap->insert("fnt_string_ends",  Tag::FontStringEnds);
 
   this->mTagNameMap->insert("tmpl_filename", Tag::TemplateFilename);
   this->mTagNameMap->insert("templateFile",  Tag::TemplateFilename);
@@ -192,6 +194,7 @@ void TagsList::initTagsMap()
   this->mTagNameMap->insert("imageData",             Tag::OutputImageData);
   this->mTagNameMap->insert("out_image_preview",     Tag::OutputImagePreview);
   this->mTagNameMap->insert("out_images_count",      Tag::OutputImagesCount);
+  this->mTagNameMap->insert("out_image_offset",      Tag::OutputImageOffset);
   this->mTagNameMap->insert("imagesCount",           Tag::OutputImagesCount);
   this->mTagNameMap->insert("out_comma",             Tag::OutputComma);
   this->mTagNameMap->insert("comma",                 Tag::OutputComma);
